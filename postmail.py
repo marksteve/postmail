@@ -7,12 +7,6 @@ from flask import Flask, abort, jsonify, request
 
 load_dotenv(find_dotenv())
 
-SECRET_KEY = os.environ['SECRET_KEY']
-FROM_EMAIL = os.environ['FROM_EMAIL']
-MG_API_BASE_URL = os.environ['MG_API_BASE_URL']
-MG_API_KEY = os.environ['MG_API_KEY']
-
-
 app = Flask(__name__)
 
 
@@ -24,12 +18,17 @@ def gentoken(secret_key, email):
 
 @app.route('/<token>', methods=['POST'])
 def postmail(token):
+    secret_key = os.environ['SECRET_KEY']
+    from_email = os.environ['FROM_EMAIL']
+    mg_api_base_url = os.environ['MG_API_BASE_URL']
+    mg_api_key = os.environ['MG_API_KEY']
     to = request.form['to']
-    if token != gentoken(SECRET_KEY, to):
+    if token != gentoken(secret_key, to):
         abort(400)
-    data = {**request.form, 'from': FROM_EMAIL}
-    resp = requests.post(MG_API_BASE_URL + 'messages',
-                         auth=('api', MG_API_KEY), data=data)
+    data = request.form
+    data['from'] = from_email
+    resp = requests.post(mg_api_base_url + 'messages',
+                         auth=('api', mg_api_key), data=data)
     return jsonify(resp.json())
 
 
