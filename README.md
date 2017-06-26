@@ -1,14 +1,19 @@
 # Postmail
 
-```python
-import requests
-import hashlib
-token = hashlib.sha1(
-    '<secret_key>:<email>'.encode('utf-8')).hexdigest()
-requests.post('http://localhost:5000/' + token, data={
-    'from': '',
-    'to': '',
-    'subject': '',
-    'text': '',
-})
+## Server
+
+```sh
+gunicorn postmail:app
 ```
+
+## Send
+
+```python
+from postmail import send
+send('<email>', '<secret_key>', 'http://localhost:5000', subject='', text='')
+```
+
+## License
+
+[MIT](https://marksteve.mit-license)
+
