@@ -5,8 +5,6 @@ import requests
 from dotenv import find_dotenv, load_dotenv
 from flask import Flask, abort, jsonify, request
 
-load_dotenv(find_dotenv())
-
 app = Flask(__name__)
 
 
@@ -18,6 +16,7 @@ def gentoken(secret_key, email):
 
 @app.route('/<token>', methods=['POST'])
 def postmail(token):
+    load_dotenv(find_dotenv())
     secret_key = os.environ['SECRET_KEY']
     from_email = os.environ['FROM_EMAIL']
     mg_api_base_url = os.environ['MG_API_BASE_URL']
