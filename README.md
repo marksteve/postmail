@@ -15,5 +15,5 @@ send('<email>', '<secret_key>', 'http://localhost:5000', subject='', text='')
 
 ## License
 
-[MIT](https://marksteve.mit-license)
+[MIT](https://marksteve.mit-license.org)
 
